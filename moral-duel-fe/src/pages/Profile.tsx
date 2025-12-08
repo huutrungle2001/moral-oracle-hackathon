@@ -22,9 +22,9 @@ const Profile = () => {
   const walletAddress = "0xABC123DEF456GHI789JKL012MNO345PQR678STU901";
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editedProfile, setEditedProfile] = useState({
-    name: "Thạc sĩ bé iu",
-    email: "thacsibeiu83@gmail.com",
-    bio: "Như mây bình thản, như nước thong dong",
+    name: "Master of Logic",
+    email: "logic.master@gmail.com",
+    bio: "Calm as a cloud, flowing like water",
   });
 
   const handleConnect = () => {

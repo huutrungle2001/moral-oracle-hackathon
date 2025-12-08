@@ -32,7 +32,7 @@
 *   [ ] **Real-world Integration**:
     *   [ ] Replace `mockData.ts` with real API calls (currently hybrid).
     *   [ ] Integrate real Wallet Connect (e.g., RainbowKit / Metamask).
-/
+
 ---
 
 ## Phase 3: Backend API & Agent (Moral Duel BE) [PENDING]

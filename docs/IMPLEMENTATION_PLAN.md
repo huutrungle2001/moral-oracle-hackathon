@@ -1,7 +1,7 @@
 # Implementation Plan: Moral Oracle
 
 **Goal**: Build a "Wisdom Staking" platform where users stake tokens on moral reasoning, adjudicated by an AI Oracle.
-**Frameworks**: React/Tailwind (Frontend), Node/Express (Backend API), IQAI ADK (Agent), IQAI ATP (Platform).
+**Frameworks**: React/Tailwind (Frontend), Node/Express (Backend API), IQAI ADK (Agent), EVM Standard (Chain Agnostic).
 
 ---
 
@@ -39,8 +39,8 @@
 > **Status**: Initial Setup Only
 *   [x] **Scaffold**: Express server setup with TypeScript.
 *   [ ] **Database (SQLite)**:
-    *   [ ] **Port Legacy Schema**: Copy `schema.prisma` from `moral-duel-be` (User, Case, Argument, Vote models).
-    *   [ ] Initialize Prisma Client in `moral-duel-ts`.
+    *   [x] **Port Legacy Schema**: Copy `schema.prisma` from `moral-duel-be` (User, Case, Argument, Vote models).
+    *   [x] Initialize Prisma Client in `moral-duel-ts`.
 *   [ ] **API Implementation**:
     *   [ ] `POST /auth/connect`: Handle wallet login / profile creation.
     *   [ ] `POST /case/create`: Save case & trigger Moderator Agent.

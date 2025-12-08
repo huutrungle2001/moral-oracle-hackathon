@@ -25,7 +25,8 @@ graph TD
 
 ## Authentication Strategy: Wallet-First
 **Moral Oracle uses a "Connect to Play" model.**
-1.  **Identity**: The user's Identity is their **Wallet Address** (e.g., Ethereum/USDC, Metamask).
+1.  **Identity**: The user's Identity is their **Wallet Address** (EVM Standard `0x...` format).
+    *   *Decision*: **EVM Agnostic**. We support any EVM-compatible chain (Eth, Base, Neo X) to maximize compatibility and tooling availability (`viem`, `wagmi`).
 2.  **Profile Creation**:
     *   First connection -> Backend creates a shadow profile for this address.
     *   User can optionally set a Display Name / Avatar later.

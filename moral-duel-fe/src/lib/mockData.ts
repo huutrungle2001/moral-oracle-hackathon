@@ -53,11 +53,11 @@ export const mockCases: Case[] = [
   },
   {
     id: "2",
-    title: "Sa thải nhân viên lớn tuổi?",
-    context: "Hiệu suất của ông A chỉ bằng 50% người trẻ, nhưng ông ấy tận tâm và sắp nghỉ hưu. Có nên sa thải không?",
+    title: "Firing an Elderly Employee?",
+    context: "Mr. A's performance is only 50% compared to younger staff, but he is dedicated and nearing retirement. Should he be fired?",
     hashtags: ["#Workplace", "#Ethics"],
-    yesArgument: "Công ty không thể vận hành bằng lòng trắc ẩn.",
-    noArgument: "Giữ ông A lại thể hiện trách nhiệm xã hội.",
+    yesArgument: "A company cannot run on compassion alone.",
+    noArgument: "Keeping Mr. A demonstrates social responsibility.",
     yesVotes: 178,
     noVotes: 389,
     rewardPool: 980,
@@ -66,15 +66,15 @@ export const mockCases: Case[] = [
     topComments: [
       {
         id: "c3",
-        author: "Thạc sĩ bé iu",
-        content: "Kinh doanh là kinh doanh. Cảm xúc không trả lương nhân viên.",
+        author: "LittleMaster",
+        content: "Business is business. Feelings don't pay salaries.",
         votes: 54,
         side: "yes",
       },
       {
         id: "c4",
-        author: "Mèo anh lông ngắn",
-        content: "Ông ấy đã cống hiến nhiều năm. Đây là cơ hội cho công ty thể hiện nhân văn.",
+        author: "BritishShorthair",
+        content: "He has dedicated years to this place. This is a chance for the company to show humanity.",
         votes: 92,
         side: "no",
       },
@@ -82,11 +82,11 @@ export const mockCases: Case[] = [
   },
   {
     id: "3",
-    title: "Tìm hiểu người mới khi ly thân?",
-    context: "Bạn bắt đầu quen người mới khi vẫn chưa ly hôn.",
+    title: "Dating While Separated but Not Divorced?",
+    context: "You start dating someone new while you are separated but your divorce is not yet finalized.",
     hashtags: ["#Love", "#Ethics"],
-    yesArgument: "Ly thân nghĩa là đã kết thúc.",
-    noArgument: "Đó vẫn là cam kết đạo đức cho đến khi ly hôn hoàn tất.",
+    yesArgument: "Separation means it's over.",
+    noArgument: "It's still a moral commitment until the divorce is final.",
     yesVotes: 312,
     noVotes: 267,
     rewardPool: 1450,
@@ -96,15 +96,73 @@ export const mockCases: Case[] = [
       {
         id: "c5",
         author: "Mle",
-        content: "Ly thân đã là dấu chấm hết. Mọi người xứng đáng có hạnh phúc mới.",
+        content: "Separation is already the end. Everyone deserves new happiness.",
         votes: 78,
         side: "yes",
       },
       {
         id: "c6",
-        author: "Hải Râu",
-        content: "Giấy tờ chưa xong nghĩa là vẫn còn trách nhiệm. Hãy tôn trọng cam kết.",
+        author: "BeardSea",
+        content: "Paperwork not done means responsibility remains. Respect the commitment.",
         votes: 71,
+        side: "no",
+      },
+    ],
+  },
+  {
+    id: "4",
+    title: "Using AI Art for Commercial Projects?",
+    context: "An artist uses AI to generate base assets for a client project to save time, without explicitly disclosing it. The result is good, but is it ethical?",
+    hashtags: ["#AI", "#CreativeRights"],
+    yesArgument: "Efficiency matters. If the output is good, the tool doesn't matter.",
+    noArgument: "It devalues human skill and potentially infringes on other artists' styles.",
+    yesVotes: 512,
+    noVotes: 489,
+    rewardPool: 2100,
+    timeRemaining: "5h 20m",
+    isTrending: true,
+    topComments: [
+      {
+        id: "c7",
+        author: "TechOptimist",
+        content: "AI is just a tool like a camera was to painters. Adapt or perish.",
+        votes: 120,
+        side: "yes",
+      },
+      {
+        id: "c8",
+        author: "Traditionalist",
+        content: "It feels like cheating. The client pays for your vision, not a machine's average.",
+        votes: 115,
+        side: "no",
+      },
+    ],
+  },
+  {
+    id: "5",
+    title: "The Triage Algorithm",
+    context: "A hospital uses an AI to prioritize emergency patients. It suggests treating a younger patient with higher survival odds over an elderly philanthropist.",
+    hashtags: ["#Bioethics", "#AI"],
+    yesArgument: "Maximizing total life years saved is the most logical metric.",
+    noArgument: "Social contribution and 'fairness' should count, not just raw biology.",
+    yesVotes: 890,
+    noVotes: 910,
+    rewardPool: 5000,
+    timeRemaining: "2h 10m",
+    isTrending: true,
+    topComments: [
+      {
+        id: "c9",
+        author: "LogicBot",
+        content: "Cold logic saves more lives in the long run. The algorithm is unbiased.",
+        votes: 230,
+        side: "yes",
+      },
+      {
+        id: "c10",
+        author: "Humanist",
+        content: "A society that ignores the value of past contributions ironically has no future.",
+        votes: 245,
         side: "no",
       },
     ],
@@ -116,7 +174,7 @@ export const mockArguments = {
     yes: [
       {
         id: "a1",
-        author: "Bà béo",
+        author: "Mrs. Fatty",
         content:
           "In an era where infidelity is too easy, verification is reasonable. If your partner is innocent, they won't mind sharing their location.",
         votes: 145,
@@ -140,14 +198,14 @@ export const mockArguments = {
     no: [
       {
         id: "a4",
-        author: "Thạc sĩ bé iu",
+        author: "LittleMaster",
         content: "Love cannot be built on surveillance. Tracking is an act of betraying trust.",
         votes: 189,
         potentialReward: 95,
       },
       {
         id: "a5",
-        author: "Mèo anh lông ngắn",
+        author: "BritishShorthair",
         content: "If you need to control your partner to this extent, the relationship has been dead for a long time.",
         votes: 156,
         potentialReward: 80,
@@ -165,23 +223,23 @@ export const mockArguments = {
     yes: [
       {
         id: "a7",
-        author: "Hải Râu",
+        author: "BeardSea",
         content:
-          "Công ty cần tối ưu hiệu suất để cạnh tranh. Giữ nhân viên kém năng suất là không công bằng với đồng nghiệp.",
+          "Companies need to optimize performance to compete. Keeping unproductive employees is unfair to hardworking colleagues.",
         votes: 112,
         potentialReward: 60,
       },
       {
         id: "a8",
-        author: "Bà béo",
-        content: "Kinh doanh là về kết quả. Tình cảm không thể thay thế hiệu suất.",
+        author: "Mrs. Fatty",
+        content: "Business is about results. Sentiment cannot replace performance.",
         votes: 89,
         potentialReward: 45,
       },
       {
         id: "a8b",
-        author: "Hung_nam_ky",
-        content: "Người trẻ làm việc nhanh hơn thì tốt hơn rồi.",
+        author: "SouthernGuy",
+        content: "Younger people work faster, so it's better.",
         votes: 18,
         potentialReward: 10,
       },
@@ -190,21 +248,21 @@ export const mockArguments = {
       {
         id: "a9",
         author: "Tribatko",
-        content: "Ông ấy đã cống hiến cả thanh xuân. Đây là lúc công ty đền đáp lòng trung thành.",
+        content: "He demonstrated loyalty for years. This is the moment for the company to repay that loyalty.",
         votes: 201,
         potentialReward: 100,
       },
       {
         id: "a10",
         author: "Harithng",
-        content: "Sa thải ông ấy sẽ gửi thông điệp tồi đến toàn bộ nhân viên: lòng trung thành không có giá trị.",
+        content: "Firing him sends a terrible message to all staff: loyalty has no value here.",
         votes: 178,
         potentialReward: 90,
       },
       {
         id: "a10b",
-        author: "Jessica meo meo",
-        content: "Ông ấy là người tốt, thấy tội nghiệp.",
+        author: "JessicaMeow",
+        content: "He is a good person, I feel bad for him.",
         votes: 22,
         potentialReward: 12,
       },
@@ -214,8 +272,8 @@ export const mockArguments = {
     yes: [
       {
         id: "a11",
-        author: "Thạc sĩ bé iu",
-        content: "Ly thân là quyết định cuối cùng. Không ai nên phải đợi giấy tờ mới được sống tiếp.",
+        author: "LittleMaster",
+        content: "Separation is the final decision. No one should have to wait for paperwork to live their life.",
         votes: 167,
         potentialReward: 85,
       },
@@ -223,11 +281,30 @@ export const mockArguments = {
     no: [
       {
         id: "a12",
-        author: "Mèo anh lông ngắn",
-        content: "Cam kết không chỉ là giấy tờ. Hãy tôn trọng người còn lại cho đến khi mọi thứ chính thức kết thúc.",
+        author: "BritishShorthair",
+        content: "Commitment isn't just paper. Respect your partner until everything is officially over.",
         votes: 143,
         potentialReward: 70,
       },
     ],
   },
+  "4": {
+    yes: [
+      { id: "a13", author: "TechOptimist", content: "Tools evolve. We used to mix paints, now we use pixels. AI is just the next step.", votes: 85, potentialReward: 40 },
+      { id: "a14", author: "EfficiencyPro", content: "Client budgets are tight. If I can deliver quality faster, everyone wins.", votes: 72, potentialReward: 35 }
+    ],
+    no: [
+      { id: "a15", author: "Traditionalist", content: "Art is expression, not just production. You are robbing the process of its soul.", votes: 95, potentialReward: 48 },
+      { id: "a16", author: "LegalEagle", content: "The training data is stolen. You are profiting from theft.", votes: 110, potentialReward: 55 }
+    ]
+  },
+  "5": {
+    yes: [
+      { id: "a17", author: "Utilitarian_One", content: "QALY (Quality Adjusted Life Years) is the standard. Save the most life-time possible.", votes: 210, potentialReward: 105 },
+    ],
+    no: [
+      { id: "a18", author: "VirtueEthicsFan", content: "We cannot reduce humans to numbers. We owe a debt of gratitude to our elders.", votes: 195, potentialReward: 98 },
+      { id: "a19", author: "SlipperySlope", content: "If we kill the 'less useful', who decides usefulness tomorrow?", votes: 180, potentialReward: 90 }
+    ]
+  }
 };

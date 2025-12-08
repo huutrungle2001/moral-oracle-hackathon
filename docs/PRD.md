@@ -13,6 +13,7 @@ To help people learn to think like an intelligent mind, reason like a philosophe
 *   **Not just a debate platform**: A place where sharp thinking is rewarded.
 *   **Wisdom Staking**: Users stake on reasoning, not just popularity.
 *   **The Moral Shock**: The realization when collective emotional voting contradicts AI's objective reasoning, driving curiosity and learning.
+*   **Wallet-First Identity**: Seamless "Connect to Play" experience without traditional registration barriers.
 
 ## 3. Core Features & Phases
 

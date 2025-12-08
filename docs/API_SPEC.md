@@ -9,7 +9,14 @@
 *   **GET** `/health`: Check status.
 *   **GET** `/stats`: Platform stats (Total Duels, Total Votes, etc).
 
-### 2. Cases (Scenarios)
+### 2. Authentication (Wallet)
+*   **POST** `/auth/connect`
+*   **Body**: `{ "walletAddress": "0x123..." }`
+*   **Response**: 
+    *   `200 OK`: Returns existing profile `{ "id": "...", "name": "The Sage", "isNewUser": false }`
+    *   `201 Created`: Created new shadow profile `{ "id": "...", "isNewUser": true }`
+
+### 3. Cases (Scenarios)
 
 #### Create (with Moderation)
 *   **POST** `/case/create`
@@ -21,7 +28,7 @@
 *   **GET** `/cases?filter=trending|new`: List cases.
 *   **GET** `/cases/:id`: Detailed view.
 
-### 3. Debate (Voting)
+### 4. Debate (Voting)
 
 #### Cast Vote
 *   **POST** `/cases/:id/vote`
@@ -32,7 +39,7 @@
 *   **POST** `/cases/:id/arguments/:argId/upvote`
 *   **Body**: `{ "user": "0x..." }`
 
-### 4. Oracle (Judgment & Feedback)
+### 5. Oracle (Judgment & Feedback)
 
 #### Trigger Judgment (System/Cron)
 *   **POST** `/cases/:id/judge`
@@ -51,7 +58,7 @@
     }
     ```
 
-### 5. Profile & Reputation
+### 6. Profile & Reputation
 *   **GET** `/profile/:userId`
 *   **Response**:
     ```json

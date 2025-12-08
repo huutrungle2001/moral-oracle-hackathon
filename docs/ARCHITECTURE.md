@@ -20,7 +20,22 @@ graph TD
 
     Oracle -->|Commit Verdict| DB
     DB -->|Smart Contract Trigger| Blockchain[Smart Contract / Mock]
+    DB -->|Smart Contract Trigger| Blockchain[Smart Contract / Mock]
 ```
+
+## Authentication Strategy: Wallet-First
+**Moral Oracle uses a "Connect to Play" model.**
+1.  **Identity**: The user's Identity is their **Wallet Address** (e.g., Neo X, MetaMask).
+2.  **Profile Creation**:
+    *   First connection -> Backend creates a shadow profile for this address.
+    *   User can optionally set a Display Name / Avatar later.
+3.  **Authentication Flow**:
+    *   User clicks "Connect Wallet" on Frontend.
+    *   Frontend verifies connection.
+    *   **NO** traditional password/email login required.
+4.  **Why?**
+    *   Reduces friction (One click start).
+    *   Aligns with "Wisdom Staking" core mechanic which requires a wallet anyway.
 
 ## Components
 

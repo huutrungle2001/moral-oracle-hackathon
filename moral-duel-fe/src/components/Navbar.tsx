@@ -8,8 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState, useEffect } from "react";
-import logoDark from "@/assets/logo-dark.png";
-import logoLight from "@/assets/logo-light.png";
+import logoDark from "@/assets/logic-emotion-dark.png";
+import logoLight from "@/assets/logic-emotion-light.png";
 
 const Navbar = () => {
   const location = useLocation();

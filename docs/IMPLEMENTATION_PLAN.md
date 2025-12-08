@@ -36,16 +36,17 @@
 ---
 
 ## Phase 3: Backend API & Agent (Moral Duel BE) [PENDING]
-> **Status**: Initial Setup Only
+> **Status**: Core API & Database Ready (Agent Logic Pending)
 *   [x] **Scaffold**: Express server setup with TypeScript.
-*   [ ] **Database (SQLite)**:
+*   [x] **Database (SQLite)**:
     *   [x] **Port Legacy Schema**: Copy `schema.prisma` from `moral-duel-be` (User, Case, Argument, Vote models).
     *   [x] Initialize Prisma Client in `moral-duel-ts`.
-*   [ ] **API Implementation**:
-    *   [ ] `POST /auth/connect`: Handle wallet login / profile creation.
-    *   [ ] `POST /case/create`: Save case & trigger Moderator Agent.
-    *   [ ] `POST /vote`: Record vote & stake.
-    *   [ ] `GET /case/:id`: Aggregate votes and fetch status.
+*   [x] **API Implementation**:
+    *   [x] `POST /auth/connect`: Handle wallet login / profile creation.
+    *   [x] `POST /case/create`: Save case & trigger Moderator Agent.
+    *   [x] `POST /vote`: Record vote & stake.
+    *   [x] `GET /case/:id`: Aggregate votes and fetch status.
+    *   [x] **Testing**: Integration tests setup with Jest/Supertest (`/auth` passing).
 *   [ ] **Agent Integration (ADK)**:
     *   [ ] **Moderator Agent**: Implement ADK Workflow to check content safety.
     *   [ ] **Judge Agent**: Implement "Moral Constitution" logic (3 Pillars) using ADK-TS Loop.

@@ -1,7 +1,7 @@
 # Implementation Plan: Moral Oracle
 
 **Goal**: Build a "Wisdom Staking" platform where users stake tokens on moral reasoning, adjudicated by an AI Oracle.
-**Frameworks**: React/Tailwind (Frontend), Node/Express (Backend API), IQAI ADK (Agent), Neo X (Blockchain).
+**Frameworks**: React/Tailwind (Frontend), Node/Express (Backend API), IQAI ADK (Agent), IQAI ATP (Platform).
 
 ---
 
@@ -31,33 +31,36 @@
     *   [x] "Oracle Verdict" display (Winner, Reasoning, Top Arguments).
 *   [ ] **Real-world Integration**:
     *   [ ] Replace `mockData.ts` with real API calls (currently hybrid).
-    *   [ ] Integrate real Wallet Connect (e.g., RainbowKit / NeoLine).
-
+    *   [ ] Integrate real Wallet Connect (e.g., RainbowKit / Metamask).
+/
 ---
 
 ## Phase 3: Backend API & Agent (Moral Duel BE) [PENDING]
 > **Status**: Initial Setup Only
 *   [x] **Scaffold**: Express server setup with TypeScript.
 *   [ ] **Database (SQLite)**:
-    *   [ ] `users` table (wallet_address, moral_iq, badges).
-    *   [ ] `cases` table (title, context, status, reward_pool).
-    *   [ ] `votes` table (user_id, case_id, side, argument, stake_amount).
+    *   [ ] **Port Legacy Schema**: Copy `schema.prisma` from `moral-duel-be` (User, Case, Argument, Vote models).
+    *   [ ] Initialize Prisma Client in `moral-duel-ts`.
 *   [ ] **API Implementation**:
     *   [ ] `POST /auth/connect`: Handle wallet login / profile creation.
     *   [ ] `POST /case/create`: Save case & trigger Moderator Agent.
     *   [ ] `POST /vote`: Record vote & stake.
     *   [ ] `GET /case/:id`: Aggregate votes and fetch status.
 *   [ ] **Agent Integration (ADK)**:
-    *   [ ] **Moderator**: Check cases for hate speech before saving.
-    *   [ ] **Judge**: Cron job to fetch "Closed" cases -> Prompt LLM -> Save Verdict.
+    *   [ ] **Moderator Agent**: Implement ADK Workflow to check content safety.
+    *   [ ] **Judge Agent**: Implement "Moral Constitution" logic (3 Pillars) using ADK-TS Loop.
+        *   *Note*: Do NOT port legacy Python prompts. Use `docs/MORAL_CONSTITUTION.md` as source of truth.
 
 ---
 
-## Phase 4: Smart Contract (Settlement) [FUTURE]
+## Phase 4: ATP Integration (Settlement) [FUTURE]
 > **Status**: Planned
-*   [ ] **Contract Development**:
-    *   [ ] `Staking.sol`: Handle deposits for votes.
-    *   [ ] `Payout.sol`: Distribute rewards based on Oracle signature.
+*   [ ] **Asset Tokenization**:
+    *   [ ] Register "Moral Oracle" agent on IQAI ATP.
+    *   [ ] Define "Wisdom Stake" asset mechanics.
+*   [ ] **Integration**:
+    *   [ ] Backend triggers ATP "Settlement" events.
+    *   [ ] Wallet connect flow uses supported ATP chains (e.g. Ethereum/L2).
 *   [ ] **Integration**:
     *   [ ] Backend listens to Contract Events (Deposit).
     *   [ ] Backend signs "Verdict" transactions for Contract to execute payout.

@@ -47,10 +47,10 @@
     *   [x] `POST /vote`: Record vote & stake.
     *   [x] `GET /case/:id`: Aggregate votes and fetch status.
     *   [x] **Testing**: Integration tests setup with Jest/Supertest (`/auth` passing).
-*   [ ] **Agent Integration (ADK)**:
+*   [x] **Agent Integration (ADK)**:
     *   [x] **Setup**: Installed ADK-TS/OpenAI & Configured `src/agent/config`.
     *   [x] **Moderator Agent**: Implement ADK Workflow to check content safety.
-    *   [ ] **Judge Agent**: Implement "Moral Constitution" logic (3 Pillars) using ADK-TS Loop.
+    *   [x] **Judge Agent**: Implement "Moral Constitution" logic (3 Pillars) using ADK-TS Loop.
         *   *Note*: Do NOT port legacy Python prompts. Use `docs/MORAL_CONSTITUTION.md` as source of truth.
 
 ---

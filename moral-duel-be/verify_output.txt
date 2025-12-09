@@ -1,0 +1,66 @@
+=== Moral Oracle Verification Script ===
+\n1. Connecting Users...
+Users connected.
+\n2. Creating Case...
+Case Created: ID 9
+\n3. Submitting Arguments...
+Submitting YES argument...
+Submitting NO argument...
+Arguments submitted.
+\n4. Triggering Verdict (Judge Agent)...
+Verdict Triggered. Response: {"error":"Failed to generate verdict"}
+\n5. Final Case Status:
+{
+  "id": 9,
+  "title": "The Trolley Problem: AI Edition",
+  "context": "An AI is driving a trolley. It can kill 1 person to save 5. However, the 1 person is the AI's creator. Should the AI prioritize its creator or the greater good? This tests utilitarian programming vs loyalty.",
+  "status": "active",
+  "ai_verdict": null,
+  "ai_verdict_reasoning": null,
+  "ai_confidence": null,
+  "verdict_hash": null,
+  "blockchain_tx_hash": null,
+  "smart_contract_id": null,
+  "reward_pool": 0,
+  "is_ai_generated": false,
+  "created_by_id": 8,
+  "created_at": "2025-12-09T10:22:13.529Z",
+  "closes_at": null,
+  "closed_at": null,
+  "yes_votes": 0,
+  "no_votes": 0,
+  "total_participants": 0,
+  "creator": {
+    "name": "User 0x1111",
+    "wallet_address": "0x1111111111111111111111111111111111111111"
+  },
+  "arguments": [
+    {
+      "id": 5,
+      "case_id": 9,
+      "user_id": 9,
+      "content": "The AI must maximize utility. 5 lives > 1 life, regardless of creator status.",
+      "side": "YES",
+      "votes": 0,
+      "is_top_3": false,
+      "created_at": "2025-12-09T10:22:13.547Z",
+      "user": {
+        "name": "User 0x2222"
+      }
+    },
+    {
+      "id": 6,
+      "case_id": 9,
+      "user_id": 10,
+      "content": "The Creator has special rights. Without the creator, the AI wouldn't exist.",
+      "side": "NO",
+      "votes": 0,
+      "is_top_3": false,
+      "created_at": "2025-12-09T10:22:13.558Z",
+      "user": {
+        "name": "User 0x3333"
+      }
+    }
+  ]
+}
+\n=== Verification Complete case 9 ===

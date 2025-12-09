@@ -3,6 +3,7 @@ import { mockDb } from "../utils/mockDb";
 import { z } from "zod";
 import { moderateContent } from "../agent/moderator/moderator.agent";
 import { evaluateCase } from "../agent/judge";
+import { atpService } from "../services/atp.service";
 
 // Validation Schemas
 const CreateCaseSchema = z.object({
@@ -66,8 +67,18 @@ export class CaseController {
       // Update Case in DB (Mock)
       caseItem.status = "closed";
       caseItem.ai_verdict = verdict.verdict;
+      caseItem.ai_verdict = verdict.verdict;
       caseItem.ai_verdict_reasoning = verdict.reasoning;
-      // We don't have closed_at in mock type yet, but ok.
+
+      // Trigger ATP Settlement
+      // For hacked demo: Settle 100 tokens to the case creator as a reward for resolving the dispute
+      const settlementTx = await atpService.settleCase(
+        String(id),
+        caseItem.creator_wallet,
+        BigInt(100)
+      );
+
+      console.log(`Settlement Result: ${settlementTx || "Failed"}`);
 
       res.json({
         message: "Verdict reached",

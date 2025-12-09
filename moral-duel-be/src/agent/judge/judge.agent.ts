@@ -1,4 +1,5 @@
-import { geminiModel } from "../config/llm";
+import { AgentBuilder } from "@iqai/adk";
+import { GPT_MODEL } from "../config/llm";
 
 export interface JudgeVerdict {
   verdict: "YES" | "NO";
@@ -50,8 +51,6 @@ export async function evaluateCase(
       .join("\n");
       
     const prompt = `
-${JUDGE_SYSTEM_PROMPT}
-
 Case Title: ${title}
 Case Context: ${context}
 
@@ -61,9 +60,17 @@ ${argsText}
 Please evaluate this case and provide your verdict.
 `;
 
-    const result = await geminiModel.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    // initialize ADK Agent
+    const agent = await AgentBuilder.create("moral_judge")
+      .withModel(GPT_MODEL) // e.g. "gemini-pro-latest"
+      .withInstruction(JUDGE_SYSTEM_PROMPT)
+      .build();
+
+    const { runner } = agent;
+    const response = await runner.ask(prompt);
+
+    // The response is the string content from the LLM
+    const text = typeof response === 'string' ? response : JSON.stringify(response);
 
     const cleanText = text.replace(/```json\n?|\n?```/g, "").trim();
     const json = JSON.parse(cleanText);

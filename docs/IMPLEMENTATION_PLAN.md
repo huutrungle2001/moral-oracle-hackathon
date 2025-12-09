@@ -35,7 +35,7 @@
 
 ---
 
-## Phase 3: Backend API & Agent (Moral Duel BE) [PENDING]
+## Phase 3: Backend API & Agent (Moral Duel BE) [IN PROGRESS]
 > **Status**: Core API & Database Ready (Agent Logic Pending)
 *   [x] **Scaffold**: Express server setup with TypeScript.
 *   [x] **Database (SQLite)**:
@@ -49,7 +49,7 @@
     *   [x] **Testing**: Integration tests setup with Jest/Supertest (`/auth` passing).
 *   [ ] **Agent Integration (ADK)**:
     *   [x] **Setup**: Installed ADK-TS/OpenAI & Configured `src/agent/config`.
-    *   [ ] **Moderator Agent**: Implement ADK Workflow to check content safety.
+    *   [x] **Moderator Agent**: Implement ADK Workflow to check content safety.
     *   [ ] **Judge Agent**: Implement "Moral Constitution" logic (3 Pillars) using ADK-TS Loop.
         *   *Note*: Do NOT port legacy Python prompts. Use `docs/MORAL_CONSTITUTION.md` as source of truth.
 

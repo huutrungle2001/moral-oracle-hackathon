@@ -13,15 +13,19 @@ import { useState, useEffect } from "react";
 import logoDark from "@/assets/logic-emotion-dark.png";
 import logoLight from "@/assets/logic-emotion-light.png";
 
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+
 const Navbar = () => {
   const location = useLocation();
   const { toast } = useToast();
   const [isDark, setIsDark] = useState(false);
-  // isLoggedIn is now driven by isConnected state
-  const [isConnected, setIsConnected] = useState(false);
-  const [user, setUser] = useState<any>(null); // Use any for simplicity or import User type
 
-  const [walletAddress] = useState("0xABC...F91"); // Keeps old ref if needed, can remove later
+  // Solana Hooks
+  const { connected, disconnect } = useWallet();
+  const { setVisible } = useWalletModal();
+
+  const [user, setUser] = useState<any>(null); 
 
   useEffect(() => {
     const isDarkMode = document.documentElement.classList.contains('dark');
@@ -29,43 +33,21 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    // Check local storage on mount
+    // Check local storage on mount or when connected changes
     const storedUser = api.getCurrentUser();
     if (storedUser) {
       setUser(storedUser);
-      setIsConnected(true);
     }
-  }, []);
+  }, [connected]); 
 
-  const handleConnect = async () => {
-    // Simulate Metamask Connection (Request Accounts)
-    // For now, generate/mock a random wallet if window.ethereum is missing for easy testing
-    let walletAddress = "0x" + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join("");
-
-    // In real app:
-    // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    // walletAddress = accounts[0];
-
-    try {
-      const user = await api.connectWallet(walletAddress);
-      setUser(user);
-      setIsConnected(true);
-      toast({
-        title: "Wallet connected!",
-        description: `Welcome back, ${user.name}`
-      });
-    } catch (e) {
-      toast({
-        variant: "destructive",
-        title: "Failed to connect wallet"
-      });
-    }
+  const handleConnect = () => {
+    setVisible(true); // Open Solana Wallet Modal
   };
 
   const handleDisconnect = () => {
-    setIsConnected(false);
-    setUser(null);
+    disconnect();
     api.logout();
+    setUser(null);
     toast({
       description: "Wallet disconnected"
     });
@@ -128,7 +110,7 @@ const Navbar = () => {
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </Button>
             
-            {!isConnected ? (
+            {!connected ? (
               <>
                 <Button variant="outline" className="gap-2" onClick={handleConnect}>
                     <LogIn className="w-4 h-4" />

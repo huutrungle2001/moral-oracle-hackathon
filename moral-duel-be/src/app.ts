@@ -6,9 +6,13 @@ dotenv.config();
 
 const app = express();
 
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 import authRoutes from "./routes/auth.routes";
 import caseRoutes from "./routes/case.routes";

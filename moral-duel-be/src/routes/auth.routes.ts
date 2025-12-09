@@ -8,7 +8,7 @@ const router = Router();
  * @swagger
  * /auth/connect:
  *   post:
- *     summary: Connect wallet and create/return user profile
+ *     summary: Connect Wallet
  *     tags: [Auth]
  *     requestBody:
  *       required: true

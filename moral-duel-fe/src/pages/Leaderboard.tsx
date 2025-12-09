@@ -15,16 +15,16 @@ interface LeaderboardUser {
 }
 
 const leaderboardData: LeaderboardUser[] = [
-  { rank: 1, name: "Thạc sĩ bé iu", points: 15240, wins: 127, badge: "Nhà hiền triết" },
-  { rank: 2, name: "Trung Le Huu", points: 14890, wins: 115, badge: "Bậc thầy lý lẽ" },
-  { rank: 3, name: "MoralGuru", points: 13650, wins: 98, badge: "Người tạo trend" },
-  { rank: 4, name: "DebateChamp", points: 12340, wins: 89, badge: "Bậc thầy lý lẽ" },
-  { rank: 5, name: "ThinkTankPro", points: 11890, wins: 82, badge: "Nhà hiền triết" },
-  { rank: 6, name: "EthicsExpert", points: 10560, wins: 76, badge: "Bậc thầy lý lẽ" },
-  { rank: 7, name: "WisdomSeeker", points: 9870, wins: 71, badge: "Người tạo trend" },
-  { rank: 8, name: "TruthFinder", points: 8920, wins: 65, badge: "Nhà hiền triết" },
-  { rank: 9, name: "ReasonWarrior", points: 8340, wins: 58, badge: "Bậc thầy lý lẽ" },
-  { rank: 10, name: "JusticeSeeker", points: 7650, wins: 52, badge: "Người tạo trend" },
+  { rank: 1, name: "Thacsibeiu", points: 15240, wins: 127, badge: "The Sage" },
+  { rank: 2, name: "Trung Le Huu", points: 14890, wins: 115, badge: "Master of Reasoning" },
+  { rank: 3, name: "MoralGuru", points: 13650, wins: 98, badge: "Trendsetter" },
+  { rank: 4, name: "DebateChamp", points: 12340, wins: 89, badge: "Master of Reasoning" },
+  { rank: 5, name: "ThinkTankPro", points: 11890, wins: 82, badge: "The Sage" },
+  { rank: 6, name: "EthicsExpert", points: 10560, wins: 76, badge: "Master of Reasoning" },
+  { rank: 7, name: "WisdomSeeker", points: 9870, wins: 71, badge: "Trendsetter" },
+  { rank: 8, name: "TruthFinder", points: 8920, wins: 65, badge: "The Sage" },
+  { rank: 9, name: "ReasonWarrior", points: 8340, wins: 58, badge: "Master of Reasoning" },
+  { rank: 10, name: "JusticeSeeker", points: 7650, wins: 52, badge: "Trendsetter" },
 ];
 
 const Leaderboard = () => {

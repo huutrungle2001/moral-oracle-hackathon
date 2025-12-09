@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../utils/prisma";
+import { mockDb } from "../utils/mockDb";
 import { z } from "zod";
 import { moderateContent } from "../agent/moderator/moderator.agent";
 import { evaluateCase } from "../agent/judge";
@@ -13,16 +13,34 @@ const CreateCaseSchema = z.object({
 
 export class CaseController {
 
+  // POST /case/judge-mock
+  static async judgeMock(req: Request, res: Response) {
+    const { title, context, arguments: args } = req.body;
+
+    try {
+      // Normalize arguments for the judge agent
+      const agentArgs = args.map((arg: any) => ({
+        id: arg.id || "0",
+        content: arg.content,
+        type: arg.side as "YES" | "NO"
+      }));
+
+      const verdict = await evaluateCase(title, context, agentArgs);
+
+      res.json({
+        verdict
+      });
+    } catch (error) {
+      console.error("Mock Judge Error:", error);
+      res.status(500).json({ error: "Failed to generate verdict" });
+    }
+  }
+
   // POST /cases/:id/verdict (Manual Trigger)
   static async triggerVerdict(req: Request, res: Response) {
     const { id } = req.params;
 
-    const caseItem = await prisma.case.findUnique({
-      where: { id: Number(id) },
-      include: {
-        arguments: true
-      }
-    });
+    const caseItem = mockDb.findCaseById(Number(id));
 
     if (!caseItem) {
       res.status(404).json({ error: "Case not found" });
@@ -45,55 +63,16 @@ export class CaseController {
     try {
       const verdict = await evaluateCase(caseItem.title, caseItem.context, agentArgs);
 
-      // Update Case in DB
-      const updatedCase = await prisma.case.update({
-        where: { id: Number(id) },
-        data: {
-          status: "closed",
-          ai_verdict: verdict.verdict,
-          ai_verdict_reasoning: verdict.reasoning,
-          closed_at: new Date(),
-          // For MVP, we aren't storing top arguments in a separate structure easily yet
-          // unless we add a specific field, but implementation plan didn't specify schema change.
-          // We can append top args to reasoning or just ignore for now in DB storage 
-          // (or store in a legacy field if available, but schema doesn't show one).
-          // Let's append to reasoning for now to make it visible.
-          // actually schema has `ai_verdict_reasoning`.
-        }
-      });
-
-      // We might want to mark the top arguments in the arguments table too?
-      // The schema has `is_top_3` boolean in Argument model.
-      // And strict mapping might be hard if IDs are not perfectly passed back or hallucinated.
-      // But let's try if ID is valid.
-
-      // Helper to update top arg
-      const updateTopArg = async (argId: string) => {
-        if (!argId) return;
-        // Verify it's a number
-        const idNum = Number(argId);
-        if (isNaN(idNum)) return;
-
-        try {
-          await prisma.argument.update({
-            where: { id: idNum },
-            data: { is_top_3: true }
-          });
-        } catch (e) {
-          console.warn(`Failed to mark argument ${argId} as top 3`, e);
-        }
-      };
-
-      await Promise.all([
-        updateTopArg(verdict.topArguments.logical),
-        updateTopArg(verdict.topArguments.humane),
-        updateTopArg(verdict.topArguments.creative)
-      ]);
+      // Update Case in DB (Mock)
+      caseItem.status = "closed";
+      caseItem.ai_verdict = verdict.verdict;
+      caseItem.ai_verdict_reasoning = verdict.reasoning;
+      // We don't have closed_at in mock type yet, but ok.
 
       res.json({
         message: "Verdict reached",
         verdict,
-        case: updatedCase
+        case: caseItem
       });
 
     } catch (error) {
@@ -107,8 +86,11 @@ export class CaseController {
     const { title, context, creator_wallet } = CreateCaseSchema.parse(req.body);
 
     // Find User
-    const user = await prisma.user.findUnique({ where: { wallet_address: creator_wallet } });
+    const user = mockDb.findUserByWallet(creator_wallet);
     if (!user) {
+      // Auto-create for demo flow ease if not exists? Or strict? 
+      // Let's be strict to follow auth flow, or simpler: just create if missing for hackathon speed?
+      // Strict is safer for consistency.
        res.status(404).json({ error: "User not found. Please connect wallet first." });
        return;
     }
@@ -134,14 +116,13 @@ export class CaseController {
 
     caseStatus = "active";
 
-    const newCase = await prisma.case.create({
-      data: {
+    const newCase = mockDb.createCase({
         title,
         context,
         status: caseStatus,
-        created_by_id: user.id,
-        reward_pool: 0, 
-      },
+      creator_wallet: user.wallet_address,
+      ai_verdict: undefined,
+      ai_verdict_reasoning: undefined
     });
 
     res.status(201).json(newCase);
@@ -152,48 +133,61 @@ export class CaseController {
   static async list(req: Request, res: Response) {
     const { sort = "trending" } = req.query;
 
-    let orderBy = {};
+    // Filter active
+    let cases = mockDb.cases.filter(c => c.status === "active" || c.status === "closed");
+
+    // Sort
     if (sort === "newest") {
-      orderBy = { created_at: "desc" };
+      cases.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
     } else {
-      // Trending = most votes/participants. Simple proxy: total_participants.
-      orderBy = { total_participants: "desc" };
+      // Trending: total_participants
+      cases.sort((a, b) => b.total_participants - a.total_participants);
     }
 
-    const cases = await prisma.case.findMany({
-      where: { status: "active" }, // Only show active cases
-      orderBy,
-      take: 20,
-      include: {
-        _count: { select: { arguments: true } },
-        creator: { select: { name: true, wallet_address: true } }
-      }
+    // Take 20
+    cases = cases.slice(0, 20);
+
+    // Enrich with creator name (mock join)
+    const enrichedCases = cases.map(c => {
+      const creator = mockDb.findUserByWallet(c.creator_wallet);
+      return {
+        ...c,
+        _count: { arguments: c.arguments.length },
+        creator: { name: creator?.name || "Unknown", wallet_address: c.creator_wallet }
+      };
     });
 
-    res.json(cases);
+    res.json(enrichedCases);
   }
 
   // GET /cases/:id
   static async getById(req: Request, res: Response) {
     const { id } = req.params;
     
-    const caseItem = await prisma.case.findUnique({
-      where: { id: Number(id) },
-      include: {
-        creator: { select: { name: true, wallet_address: true } },
-        arguments: {
-           include: { user: { select: { name: true } } },
-           orderBy: { votes: 'desc' },
-           take: 10
-        }
-      }
-    });
+    const caseItem = mockDb.findCaseById(Number(id));
 
     if (!caseItem) {
       res.status(404).json({ error: "Case not found" });
       return;
     }
 
-    res.json(caseItem);
+    // Sort arguments by votes
+    const sortedArgs = [...caseItem.arguments].sort((a, b) => b.votes - a.votes);
+
+    // Enrich
+    const creator = mockDb.findUserByWallet(caseItem.creator_wallet);
+    const enrichedCase = {
+      ...caseItem,
+      creator: { name: creator?.name || "Unknown", wallet_address: caseItem.creator_wallet },
+      arguments: sortedArgs.map(arg => {
+        const author = mockDb.findUserByWallet(arg.user_wallet);
+        return {
+          ...arg,
+          user: { name: author?.name || "Unknown" }
+        }
+      })
+    };
+
+    res.json(enrichedCase);
   }
 }

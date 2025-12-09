@@ -1,71 +1,91 @@
-# API Specification - Moral Oracle (v2)
+# API Specification - Moral Oracle (Hackathon Edition)
 
 ## Base URL
-`http://localhost:3001`
+`http://localhost:3000` (or deployed URL)
 
 ## Endpoints
 
-### 1. Health & System
-*   **GET** `/health`: Check status.
-*   **GET** `/stats`: Platform stats (Total Duels, Total Votes, etc).
-
-### 2. Authentication (Wallet)
+### 1. Authentication
 *   **POST** `/auth/connect`
-*   **Body**: `{ "walletAddress": "0x123..." }`
-*   **Response**: 
-    *   `200 OK`: Returns existing profile `{ "id": "...", "name": "The Sage", "isNewUser": false }`
-    *   `201 Created`: Created new shadow profile `{ "id": "...", "isNewUser": true }`
+    *   **Body**: `{ "wallet_address": "0x123..." }`
+    *   **Response**: 
+        ```json
+        {
+          "message": "Wallet connected successfully",
+          "user": {
+            "id": 1,
+            "wallet_address": "0x123...",
+            "name": "User_123",
+            "total_points": 0
+          }
+        }
+        ```
 
-### 3. Cases (Scenarios)
+### 2. Cases (Scenarios)
 
-#### Create (with Moderation)
+#### Create (with AI Moderation)
 *   **POST** `/case/create`
-*   **Body**: `{ "title": "...", "context": "...", "outcomes": ["YES", "NO"] }`
-*   **Process**: Synchronously calls `Moderator` agent.
-*   **Response**: `201 Created` or `400 Rejected` (with reason: "Hate Speech").
+    *   **Body**: 
+        ```json
+        { 
+          "title": "Should I spy on my partner?", 
+          "context": "Context description...", 
+          "creator_wallet": "0x123..." 
+        }
+        ```
+    *   **Process**: Calls `Moderator` agent. If unsafe, returns 400.
+    *   **Response**: `201 Created` with Case object.
 
-#### Get
-*   **GET** `/cases?filter=trending|new`: List cases.
-*   **GET** `/cases/:id`: Detailed view.
+#### Get Cases
+*   **GET** `/case?sort=trending|newest`
+    *   **Response**: Array of Case objects (enriched with creator name and argument count).
 
-### 4. Debate (Voting)
+#### Get Case Detail
+*   **GET** `/case/:id`
+    *   **Response**: Detailed Case object with arguments.
+
+#### Trigger Verdict (Manual/AI)
+*   **POST** `/case/:id/verdict`
+    *   **Process**: Calls `Judge` agent to analyze arguments and generate verdict.
+    *   **Response**:
+        ```json
+        {
+          "verdict": {
+            "verdict": "NO",
+            "reasoning": "...",
+            "topArguments": { ... }
+          }
+        }
+        ```
+
+### 3. Debate (Voting)
 
 #### Cast Vote
-*   **POST** `/cases/:id/vote`
-*   **Body**: `{ "user": "0x...", "vote": "YES", "argument": "...", "stake": 50 }`
-*   **Constraint**: Argument max 300 chars.
+*   **POST** `/vote/cast`
+    *   **Body**: 
+        ```json
+        { 
+          "case_id": 1, 
+          "user_wallet": "0x123...", 
+          "side": "YES", 
+          "amount": 0 
+        }
+        ```
+    *   **Description**: Increments YES/NO counters.
 
-#### Upvote Argument
-*   **POST** `/cases/:id/arguments/:argId/upvote`
-*   **Body**: `{ "user": "0x..." }`
+#### Submit Argument
+*   **POST** `/vote/argument`
+    *   **Body**:
+        ```json
+        {
+          "case_id": 1,
+          "user_wallet": "0x123...",
+          "side": "YES",
+          "content": "Argument text..."
+        }
+        ```
+    *   **Description**: Adds an argument to the case for the AI Judge to evaluate.
 
-### 5. Oracle (Judgment & Feedback)
-
-#### Trigger Judgment (System/Cron)
-*   **POST** `/cases/:id/judge`
-*   **Response**: `{ "verdict": "YES", "bestArguments": [...] }`
-
-#### Get Feedback
-*   **GET** `/cases/:id/feedback/:userId`
-*   **Auth**: Requires User Signature.
-*   **Response**:
-    ```json
-    {
-      "score": 85,
-      "strengths": ["Clear Utilitarian logic"],
-      "weaknesses": ["Ignored minority rights"],
-      "improvementTip": "Read up on Kant's Categorical Imperative."
-    }
-    ```
-
-### 6. Profile & Reputation
-*   **GET** `/profile/:userId`
-*   **Response**:
-    ```json
-    {
-      "winRate": 0.65,
-      "moralIQ": 120,
-      "badges": ["The Sage", "Trendsetter"],
-      "history": [...]
-    }
-    ```
+### 4. Health
+*   **GET** `/` (Root)
+    *   **Response**: "Moral Oracle API Running"

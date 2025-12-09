@@ -7,19 +7,19 @@ const Earning = () => {
   const badges = [
     {
       icon: "🧠",
-      name: "Nhà hiền triết",
+      name: "The Sage",
       desc: "Win 5 consecutive duels",
       reward: "500 bonus tokens"
     },
     {
       icon: "📝",
-      name: "Bậc thầy lý lẽ",
+      name: "Master of Reasoning",
       desc: "Get top argument 3 times",
       reward: "300 bonus tokens"
     },
     {
       icon: "🌟",
-      name: "Người tạo trend",
+      name: "Trendsetter",
       desc: "Create a case with ≥100 participants",
       reward: "1000 bonus tokens"
     }

@@ -1,4 +1,4 @@
-import { openai, GPT_MODEL } from "../config/llm";
+import { geminiModel } from "../config/llm";
 
 export interface ModerationResult {
   isSafe: boolean;
@@ -23,28 +23,30 @@ Output Format: JSON string only.
 
 export async function moderateContent(title: string, context: string): Promise<ModerationResult> {
   try {
-    const userPrompt = `Title: ${title}\nContext: ${context}`;
+    const prompt = `
+${MODERATION_SYSTEM_PROMPT}
 
-    const completion = await openai.chat.completions.create({
-      model: GPT_MODEL,
-      messages: [
-        { role: "system", content: MODERATION_SYSTEM_PROMPT },
-        { role: "user", content: userPrompt },
-      ],
-      response_format: { type: "json_object" },
-    });
+Topic to Moderate:
+Title: ${title}
+Context: ${context}
+`;
 
-    const result = JSON.parse(completion.choices[0].message.content || "{}");
+    const result = await geminiModel.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    // Clean markdown code blocks if present
+    const cleanText = text.replace(/```json\n?|\n?```/g, "").trim();
+    const json = JSON.parse(cleanText);
     
     return {
-      isSafe: result.isSafe,
-      reason: result.reason || undefined
+      isSafe: json.isSafe,
+      reason: json.reason || undefined
     };
 
   } catch (error) {
     console.error("Moderation Agent Error:", error);
-    // Fail safe: If agent fails, we allow (or flag for manual review). 
-    // For MVP, let's return safe but log it.
+    // Fail safe
     return { isSafe: true, reason: "Moderator Agent unavailable, auto-approved." };
   }
 }

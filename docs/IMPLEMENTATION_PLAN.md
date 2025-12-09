@@ -41,6 +41,7 @@
 *   [x] **Database (SQLite)**:
     *   [x] **Port Legacy Schema**: Copy `schema.prisma` from `moral-duel-be` (User, Case, Argument, Vote models).
     *   [x] Initialize Prisma Client in `moral-duel-ts`.
+    *   **[UPDATE] Hackathon Mode**: Switched to In-Memory Mock DB for stateless deployment.
 *   [x] **API Implementation**:
     *   [x] `POST /auth/connect`: Handle wallet login / profile creation.
     *   [x] `POST /case/create`: Save case & trigger Moderator Agent.

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Wallet as WalletIcon, Award, TrendingUp, Download, User, Mail, Calendar, Settings } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -15,11 +15,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import avatarImage from "@/assets/avatar.png";
+import { api } from "@/lib/api";
 
 const Profile = () => {
   const [isConnected, setIsConnected] = useState(false);
-  const walletAddress = "0xABC123DEF456GHI789JKL012MNO345PQR678STU901";
+  const [walletAddress, setWalletAddress] = useState("");
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editedProfile, setEditedProfile] = useState({
     name: "Master of Logic",
@@ -27,25 +27,51 @@ const Profile = () => {
     bio: "Calm as a cloud, flowing like water",
   });
 
-  const handleConnect = () => {
-    setIsConnected(true);
-    toast.success("Wallet connected successfully!");
+  useEffect(() => {
+    const user = api.getCurrentUser();
+    if (user) {
+      setIsConnected(true);
+      setWalletAddress(user.wallet_address);
+      setEditedProfile(prev => ({ ...prev, name: user.name || prev.name }));
+    }
+  }, []);
+
+  const handleConnect = async () => {
+    // Simulate Metamask Connection (Reusing logic from Navbar for consistency)
+    let address = "0x" + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join("");
+
+    try {
+      const user = await api.connectWallet(address);
+      setIsConnected(true);
+      setWalletAddress(user.wallet_address);
+      setEditedProfile(prev => ({ ...prev, name: user.name }));
+      toast({ title: "Wallet connected!" });
+
+      // Force reload to sync Navbar state (simple hack for hackathon)
+      window.location.reload();
+    } catch (e) {
+      toast({ title: "Connection failed", variant: "destructive" });
+    }
   };
 
   const handleDisconnect = () => {
+    api.logout();
     setIsConnected(false);
-    toast.success("Wallet disconnected");
+    setWalletAddress("");
+    toast({ title: "Wallet disconnected" });
+    window.location.reload();
   };
 
   const handleClaim = () => {
-    toast.success("Rewards claimed! Check your wallet.");
+    toast({ title: "Rewards claimed! Check your wallet." });
   };
 
   const handleSaveProfile = () => {
-    toast.success("Profile updated successfully!");
+    toast({ title: "Profile updated successfully!" });
     setIsEditDialogOpen(false);
   };
 
+  // Mock data preserved below...
   const userProfile = {
     name: "Thạc sĩ bé iu",
     email: "thacsibeiu83@gmail.com",
@@ -83,8 +109,8 @@ const Profile = () => {
         {/* User Profile Card */}
         <Card className="p-6 mb-8 bg-gradient-to-br from-primary/5 to-accent/5">
           <div className="flex items-start gap-6">
-            <div className="w-24 h-24 rounded-full border-4 border-secondary/30 overflow-hidden flex-shrink-0 shadow-lg">
-              <img src={avatarImage} alt={editedProfile.name} className="w-full h-full object-cover" />
+            <div className="w-24 h-24 rounded-full border-4 border-secondary/30 overflow-hidden flex-shrink-0 shadow-lg bg-muted flex items-center justify-center">
+              <User className="w-12 h-12 text-muted-foreground" />
             </div>
             <div className="flex-1">
               <div className="flex items-start justify-between mb-4">

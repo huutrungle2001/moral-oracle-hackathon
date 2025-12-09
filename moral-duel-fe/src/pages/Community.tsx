@@ -8,27 +8,27 @@ const Community = () => {
   const mockPosts = [
     {
       id: 1,
-      author: "Bà béo",
-      avatar: "BB",
-      content: "Hôm nay tranh luận với chồng về việc nên mua iPhone hay Samsung, kiếm được 340 token. Giờ mua được cả 2 luôn! 😂💰",
+      author: "Big Mama",
+      avatar: "BM",
+      content: "Debated with my husband today about buying iPhone vs Samsung, earned 340 tokens. Now I can buy both! 😂💰",
       type: "reward",
-      time: "30 phút trước"
+      time: "30 minutes ago"
     },
     {
       id: 2,
-      author: "Thạc sĩ bé iu",
-      avatar: "TM",
-      content: "App này là thiên đường của mấy đứa hay cãi nhau! Vừa cãi được trả lương, về nhà cãi với vợ lại kiếm thêm experience. Win-win! 🤣",
+      author: "Thacsibeiu",
+      avatar: "MB",
+      content: "This app is heaven for argumentative people! Get paid to argue, go home and argue with wife to gain more experience. Win-win! 🤣",
       type: "shoutout",
-      time: "1 giờ trước"
+      time: "1 hour ago"
     },
     {
       id: 3,
-      author: "Mèo anh lông ngắn",
-      avatar: "MA",
-      content: "Tranh luận case 'Cài định vị điện thoại người yêu' xong, crush nhắn hỏi sao cứ online hoài. Giờ thành case mới: 'Có nên nói sự thật về nghiện app tranh luận?' 😅",
+      author: "Short Hair Cat",
+      avatar: "SC",
+      content: "After debating 'Tracking Lover's Phone', crush asked why I'm always online. Now it's a new case: 'Should you tell the truth about being addicted to debate apps?' 😅",
       type: "trending",
-      time: "2 giờ trước"
+      time: "2 hours ago"
     },
     {
       id: 4,
@@ -36,15 +36,15 @@ const Community = () => {
       avatar: "CP",
       content: "Today I earned 240 tokens by defending the importance of privacy in relationships. Logic wins! 🧠",
       type: "reward",
-      time: "2 giờ trước"
+      time: "2 hours ago"
     },
     {
       id: 5,
-      author: "Tribatko",
-      avatar: "TK",
-      content: "Vừa mở khóa huy hiệu 'Cao thủ lý lẽ'! Bí quyết: 70% logic, 30% cảm xúc, 100% kiên nhẫn đọc ý kiến người khác 🏆",
+      author: "DebatePro",
+      avatar: "DP",
+      content: "Just unlocked 'Master of Reasoning' badge! Secret: 70% logic, 30% emotion, 100% patience reading others' opinions 🏆",
       type: "achievement",
-      time: "3 giờ trước"
+      time: "3 hours ago"
     },
     {
       id: 6,
@@ -52,15 +52,15 @@ const Community = () => {
       avatar: "DL",
       content: "This app is absolutely brilliant! Finally a place where I can argue with strangers AND get paid for it. My therapist says I'm making progress. 😂",
       type: "shoutout",
-      time: "4 giờ trước"
+      time: "4 hours ago"
     },
     {
       id: 7,
-      author: "Harithng",
-      avatar: "HT",
-      content: "Mini game đạo đức: Nếu biết trước mình sẽ thua tranh luận, bạn có nên bỏ cuộc sớm để bảo toàn token không? 🤔",
+      author: "MoralGamer",
+      avatar: "MG",
+      content: "Mini moral game: If you knew you were going to lose an argument, should you quit early to save tokens? 🤔",
       type: "game",
-      time: "5 giờ trước"
+      time: "5 hours ago"
     },
     {
       id: 8,
@@ -68,31 +68,31 @@ const Community = () => {
       avatar: "MR",
       content: "Mini moral game: If you could read your partner's mind for one day, would you? The Oracle says NO. Privacy is sacred.",
       type: "game",
-      time: "5 giờ trước"
+      time: "5 hours ago"
     },
     {
       id: 9,
-      author: "Hải Râu",
-      avatar: "HR",
-      content: "Tạo case về 'Sa thải nhân viên lớn tuổi' vì nhớ sếp cũ. Giờ có 200+ người tham gia, bonus token về như lũ. Cảm ơn sếp cũ đã toxic! 😎",
+      author: "Bearded Hai",
+      avatar: "BH",
+      content: "Created a case about 'Firing Older Employees' thinking of my old toxic boss. Now 200+ participants, bonus tokens flooding in. Thanks toxic boss! 😎",
       type: "trending",
-      time: "8 giờ trước"
+      time: "8 hours ago"
     },
     {
       id: 10,
       author: "EthicsNinja42",
       avatar: "EN",
-      content: "Just unlocked 'Bậc thầy lý lẽ' badge! My arguments on workplace ethics resonated with the community 💬",
+      content: "Just unlocked 'Master of Logic' badge! My arguments on workplace ethics resonated with the community 💬",
       type: "achievement",
-      time: "1 ngày trước"
+      time: "1 day ago"
     },
     {
       id: 11,
-      author: "Mle",
-      avatar: "ML",
-      content: "\"Cuộc đời không phải đen trắng, mà là 50 sắc thái xám. Nhưng tranh luận thì phải chọn YES hay NO thôi.\" - Triết lý sống còn 2025 🧘‍♀️",
+      author: "Philosopher Girl",
+      avatar: "PG",
+      content: "\"Life isn't black and white, it's 50 shades of grey. But in debate, you must pick YES or NO.\" - Survival philosophy 2025 🧘‍♀️",
       type: "quote",
-      time: "1 ngày trước"
+      time: "1 day ago"
     },
     {
       id: 12,
@@ -100,23 +100,23 @@ const Community = () => {
       avatar: "SR",
       content: "\"The unexamined life is not worth living, but the over-examined life leads to analysis paralysis. Balance is wisdom.\" — Real moral reflection",
       type: "quote",
-      time: "1 ngày trước"
+      time: "1 day ago"
     },
     {
       id: 13,
-      author: "Hung_nam_ky",
-      avatar: "HN",
-      content: "Vợ hỏi 'Anh nghĩ sao về case định vị điện thoại?'. Anh trả lời theo phe NO. Giờ phải ngủ sofa. Kiếm token mà mất giường. Trade-off đau lòng! 🛋️😭",
+      author: "Poor Husband",
+      avatar: "PH",
+      content: "Wife asked 'What do you think about the phone tracking case?'. I answered NO side. Now sleeping on the sofa. Earned tokens but lost the bed. Painful trade-off! 🛋️😭",
       type: "shoutout",
-      time: "1 ngày trước"
+      time: "1 day ago"
     },
     {
       id: 14,
-      author: "Jessica meo meo",
+      author: "Jessica Meow",
       avatar: "JM",
-      content: "Mini game: Nếu tranh luận thắng nhưng mất bạn bè, vs tranh luận thua nhưng giữ được tình bạn - bạn chọn gì? Mình chọn... block luôn để khỏi phải chọn 🙈",
+      content: "Mini game: Win the argument but lose friends vs Lose the argument but keep friendship - what do you choose? I choose... block everyone to avoid choosing 🙈",
       type: "game",
-      time: "2 ngày trước"
+      time: "2 days ago"
     },
     {
       id: 15,
@@ -124,7 +124,7 @@ const Community = () => {
       avatar: "TH",
       content: "Created a case about elderly employment rights that got 150+ participants! Bonus rewards incoming",
       type: "trending",
-      time: "2 ngày trước"
+      time: "2 days ago"
     },
     {
       id: 16,
@@ -132,7 +132,7 @@ const Community = () => {
       avatar: "PC",
       content: "Mini moral game: Should companies prioritize profit over employee wellbeing? Cast your vote in Discover!",
       type: "game",
-      time: "2 ngày trước"
+      time: "2 days ago"
     }
   ];
 

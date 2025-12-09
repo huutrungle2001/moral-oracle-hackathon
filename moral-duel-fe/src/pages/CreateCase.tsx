@@ -7,29 +7,66 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
+import { api } from "@/lib/api";
 
 const CreateCase = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [context, setContext] = useState("");
+  const [description, setDescription] = useState(""); // Changed from context
 
-  const [isModerating, setIsModerating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); // Changed from isModerating
+  const { toast } = useToast(); // Initialized useToast hook
 
-  const handleSubmit = () => {
-    if (!title || !context) {
-      toast.error("Please fill in all fields");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
+    if (!title || !description) { // Changed from context
+      toast({
+        variant: "destructive",
+        title: "Missing Fields",
+        description: "Please fill in all fields.",
+      });
       return;
     }
 
-    setIsModerating(true);
-    toast("AI Agent is analyzing your case for policy violations...", { duration: 2000 });
+    // Check Authentication
+    const user = api.getCurrentUser(); // Assuming api.getCurrentUser() exists
+    if (!user) {
+      toast({
+        variant: "destructive",
+        title: "Wallet not connected",
+        description: "Please connect your wallet to create a case.",
+      });
+      return;
+    }
 
-    setTimeout(() => {
-      setIsModerating(false);
-      toast.success("Case approved! Published to Trending.");
-      navigate("/discover");
-    }, 2000);
+    setIsSubmitting(true); // Changed from setIsModerating
+
+    try {
+      // Real API Call
+      await api.createCase(title, description); // Changed from context
+
+      toast({
+        title: "Case Submitted",
+        description: "Your moral dilemma has been submitted for moderation.",
+      });
+
+      // Reset form
+      setTitle("");
+      setDescription(""); // Changed from setContext
+
+      // Redirect to discover to see the new case
+      navigate('/discover');
+
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Submission Error",
+        description: error.message || "Failed to create case",
+      });
+    } finally {
+      setIsSubmitting(false); // Changed from setIsModerating
+    }
   };
 
   return (
@@ -68,14 +105,14 @@ const CreateCase = () => {
 
             {/* Context */}
             <div className="space-y-2">
-              <Label htmlFor="context" className="text-base font-semibold">
+              <Label htmlFor="description" className="text-base font-semibold">
                 Context (3-6 lines) *
               </Label>
               <Textarea
-                id="context"
+                id="description"
                 placeholder="Describe the moral dilemma in detail. What's the situation? Who's involved? What's at stake?"
-                value={context}
-                onChange={(e) => setContext(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="min-h-[150px]"
               />
               <p className="text-sm text-muted-foreground">
@@ -84,12 +121,12 @@ const CreateCase = () => {
             </div>
 
             {/* Preview */}
-            {title && context && (
+            {title && description && (
               <div className="mt-8 p-6 bg-muted/50 rounded-xl border border-border">
                 <h3 className="text-sm font-semibold text-muted-foreground mb-3">Preview</h3>
                 <div className="space-y-3">
                   <h4 className="text-xl font-bold text-foreground">{title}</h4>
-                  <p className="text-muted-foreground">{context}</p>
+                  <p className="text-muted-foreground">{description}</p>
                 </div>
               </div>
             )}
@@ -106,9 +143,9 @@ const CreateCase = () => {
               <Button
                 onClick={handleSubmit}
                 className="flex-1 bg-gradient-to-r from-primary to-primary-glow hover:opacity-90 gap-2"
-                disabled={isModerating}
+                disabled={isSubmitting}
               >
-                {isModerating ? (
+                {isSubmitting ? (
                   <>
                     <Sparkles className="w-5 h-5 animate-spin" />
                     Analyzing Ethics...

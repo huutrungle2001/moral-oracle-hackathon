@@ -1,4 +1,4 @@
-import { openai, GPT_MODEL } from "../config/llm";
+import { geminiModel } from "../config/llm";
 
 export interface JudgeVerdict {
   verdict: "YES" | "NO";
@@ -49,7 +49,9 @@ export async function evaluateCase(
       .map((arg) => `[${arg.type}] (ID: ${arg.id}): ${arg.content}`)
       .join("\n");
       
-    const userPrompt = `
+    const prompt = `
+${JUDGE_SYSTEM_PROMPT}
+
 Case Title: ${title}
 Case Context: ${context}
 
@@ -59,24 +61,20 @@ ${argsText}
 Please evaluate this case and provide your verdict.
 `;
 
-    const completion = await openai.chat.completions.create({
-      model: GPT_MODEL,
-      messages: [
-        { role: "system", content: JUDGE_SYSTEM_PROMPT },
-        { role: "user", content: userPrompt },
-      ],
-      response_format: { type: "json_object" },
-    });
+    const result = await geminiModel.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
 
-    const result = JSON.parse(completion.choices[0].message.content || "{}");
+    const cleanText = text.replace(/```json\n?|\n?```/g, "").trim();
+    const json = JSON.parse(cleanText);
 
     return {
-      verdict: result.verdict,
-      reasoning: result.reasoning,
+      verdict: json.verdict,
+      reasoning: json.reasoning,
       topArguments: {
-        logical: result.topArguments?.logical || "",
-        humane: result.topArguments?.humane || "",
-        creative: result.topArguments?.creative || "",
+        logical: json.topArguments?.logical || "",
+        humane: json.topArguments?.humane || "",
+        creative: json.topArguments?.creative || "",
       },
     };
   } catch (error) {

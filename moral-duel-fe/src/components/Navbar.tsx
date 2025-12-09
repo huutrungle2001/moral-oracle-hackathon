@@ -1,6 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { Home, Users, Compass, Trophy, Moon, Sun, User, LogIn, UserPlus, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { api } from "@/lib/api";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,23 +15,65 @@ import logoLight from "@/assets/logic-emotion-light.png";
 
 const Navbar = () => {
   const location = useLocation();
+  const { toast } = useToast();
   const [isDark, setIsDark] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Set to false when implementing real auth
-  const [walletAddress] = useState("0xABC...F91");
+  // isLoggedIn is now driven by isConnected state
+  const [isConnected, setIsConnected] = useState(false);
+  const [user, setUser] = useState<any>(null); // Use any for simplicity or import User type
+
+  const [walletAddress] = useState("0xABC...F91"); // Keeps old ref if needed, can remove later
 
   useEffect(() => {
     const isDarkMode = document.documentElement.classList.contains('dark');
     setIsDark(isDarkMode);
   }, []);
 
+  useEffect(() => {
+    // Check local storage on mount
+    const storedUser = api.getCurrentUser();
+    if (storedUser) {
+      setUser(storedUser);
+      setIsConnected(true);
+    }
+  }, []);
+
+  const handleConnect = async () => {
+    // Simulate Metamask Connection (Request Accounts)
+    // For now, generate/mock a random wallet if window.ethereum is missing for easy testing
+    let walletAddress = "0x" + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join("");
+
+    // In real app:
+    // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    // walletAddress = accounts[0];
+
+    try {
+      const user = await api.connectWallet(walletAddress);
+      setUser(user);
+      setIsConnected(true);
+      toast({
+        title: "Wallet connected!",
+        description: `Welcome back, ${user.name}`
+      });
+    } catch (e) {
+      toast({
+        variant: "destructive",
+        title: "Failed to connect wallet"
+      });
+    }
+  };
+
+  const handleDisconnect = () => {
+    setIsConnected(false);
+    setUser(null);
+    api.logout();
+    toast({
+      description: "Wallet disconnected"
+    });
+  };
+
   const toggleTheme = () => {
     document.documentElement.classList.toggle('dark');
     setIsDark(!isDark);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    // Add actual logout logic here
   };
 
   const navItems = [
@@ -84,20 +128,12 @@ const Navbar = () => {
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </Button>
             
-            {!isLoggedIn ? (
+            {!isConnected ? (
               <>
-                <Link to="/auth">
-                  <Button variant="outline" className="gap-2">
+                <Button variant="outline" className="gap-2" onClick={handleConnect}>
                     <LogIn className="w-4 h-4" />
-                    <span className="hidden sm:inline">Login</span>
-                  </Button>
-                </Link>
-                <Link to="/auth">
-                  <Button variant="outline" className="gap-2">
-                    <UserPlus className="w-4 h-4" />
-                    <span className="hidden sm:inline">Sign Up</span>
-                  </Button>
-                </Link>
+                  <span className="hidden sm:inline">Connect Wallet</span>
+                </Button>
               </>
             ) : (
               <DropdownMenu>
@@ -114,7 +150,7 @@ const Navbar = () => {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem 
-                    onClick={handleLogout}
+                      onClick={handleDisconnect}
                     className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
                   >
                     <LogOut className="w-4 h-4" />
